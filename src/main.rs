@@ -96,18 +96,16 @@ fn print_whale() {
     })
 }
 
-fn args_contains_text(args: Vec<String>) -> bool {
-    let mut result = false;
-
-    let mut _args = args;
-    _args.remove(0);
-    _args.iter().for_each(|arg| {
+fn get_text_from_args(_args: Vec<String>) -> Option<String> {
+    let mut args = _args;
+    args.remove(0);
+    for arg in args {
         if !arg.starts_with("-") {
-            result = true;
+            return Some(arg);
         }
-    });
+    }
 
-    result
+    None
 }
 
 static HELP: &str = "whalesay [-n, --help] \"text\"
@@ -120,11 +118,10 @@ fn main() {
     if args.contains(&"--help".to_string()) {
         println!("{}", HELP);
     } else {
-        if !args_contains_text(args.clone()) {
-            text = io::read_to_string(io::stdin()).unwrap();
-        } else {
-            text = args.iter().nth(1).unwrap().to_string();
-        }
+        text = match get_text_from_args(args) {
+            Some(txt) => txt,
+            None => io::read_to_string(io::stdin()).unwrap()
+        };
 
         print_mind(text.trim().to_string());
         print_whale();
