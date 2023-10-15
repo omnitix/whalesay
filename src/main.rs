@@ -51,7 +51,7 @@ fn split_mind(text: String, max_len: usize) -> Vec<String> {
 }
 
 fn print_mind(text: String) {
-    let max_line_len = 35_usize;
+    let max_line_len = 70_usize;
 
     let mut splitten_mind: Vec<String> = Vec::new();
     let args: Vec<String> = env::args().collect();
